@@ -4,7 +4,9 @@ const resetEl = document.getElementById("reset")
 const timerEl = document.getElementById("timer")
 
 let interval;
-let timeLeft = 1800;
+let timeLeft = 60;
+
+let workFlg = 1;
 
 function updateTimer(){
     let minutes = Math.floor(timeLeft / 60);
@@ -17,17 +19,33 @@ function updateTimer(){
 }
 
 function startTimer(){
-    interval = setInterval(() => {
-        timeLeft--;
-        updateTimer();
-        if(timeLeft === 0){
-            clearInterval(interval);
-            alert("Time's up!");
-            timeLeft = 1800;
+    if(workFlg == 1){
+        interval = setInterval(() => {
+            timeLeft--;
             updateTimer();
-        }
-    }, 1000);
+            if (timeLeft === 0) {
+                clearInterval(interval);
+                alert("Time's up!");
+                workFlg = 0;
+                timeLeft = 300;
+                updateTimer();
+            }
+        }, 1000);
+    }else if(workFlg == 0){
+        interval = setInterval(() => {
+            timeLeft--;
+            updateTimer();
+            if (timeLeft === 0) {
+                clearInterval(interval);
+                alert("Time's up!");
+                workFlg = 1;
+                timeLeft = 1500;
+                updateTimer();
+            }
+        }, 1000);
+    }
 }
+    
 
 function stopTimer(){
     clearInterval(interval);
