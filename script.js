@@ -19,33 +19,31 @@ function updateTimer(){
 }
 
 function startTimer(){
-    if(workFlg == 1){
-        interval = setInterval(() => {
-            timeLeft--;
-            updateTimer();
-            if (timeLeft === 0) {
-                clearInterval(interval);
-                alert("Time's up!");
+    clearInterval(interval);
+    endTime = Date.now() + timeLeft * 1000;
+
+    interval = setInterval(() => {
+        let now = Date.now();
+        timeLeft = Math.round((endTime - now) / 1000);
+
+        if(timeLeft <= 0){
+            clearInterval(interval);
+            if(workFlg === 1){
+                notifyUser("Work session over! Take a break :)");
                 workFlg = 0;
                 timeLeft = 300;
-                updateTimer();
-            }
-        }, 1000);
-    }else if(workFlg == 0){
-        interval = setInterval(() => {
-            timeLeft--;
-            updateTimer();
-            if (timeLeft === 0) {
-                clearInterval(interval);
-                alert("Time's up!");
+            }else{
+                notifyUser("Break over! Go back to work >:)");
                 workFlg = 1;
                 timeLeft = 1500;
-                updateTimer();
             }
-        }, 1000);
-    }
+            updateTimer();
+            startTimer();
+        }else{
+            updateTimer();
+        }
+    }, 1000);
 }
-    
 
 function stopTimer(){
     clearInterval(interval);
@@ -55,6 +53,22 @@ function resetTimer(){
     clearInterval(interval);
     timeLeft = 1500;
     updateTimer();
+}
+
+function notifyUser(message){
+    const audio = new Audio("alarm.mp3");
+    audio.preload = "auto";
+    audio.play().catch(error => console.log("Play sound failed: ", error));
+
+    if(Notification.permission === "granted"){
+        new Notification(message);
+    }else if(Notification.permission !== "denied"){
+        Notification.requestPermission().then(permission => {
+            if(permission === "granted"){
+                new Notification(message);
+            }
+        });
+    }
 }
 
 startEl.addEventListener("click", startTimer);
