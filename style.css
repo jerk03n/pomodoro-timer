@@ -8,13 +8,13 @@
 
 .title{
     font-size: 36px;
-    margin-bottom: 10px;
-    color: #2c3e50;
+    margin-bottom: 10vw;
+    color: #2a475a;
 }
 
 .timer{
     font-size: 72px;
-    color: #2c3e50;
+    color: #2a475a;
 }
 
 button{
@@ -35,13 +35,22 @@ button:hover{
 }
 
 #start{
-    background-color: #27ea60;
+    background-color: #5f7460;
 }
 
 #stop{
-    background-color: #c0392b;
+    background-color: #ad7578;
 }
 
 #reset{
-    background-color: #7f8c8d;
+    background-color: #93909e;
+}
+
+.corner-image{
+    position: fixed;
+    bottom: 1px;
+    right: 1px;
+    width: 500px;
+    max-width:500px;
+    height:auto;
 }

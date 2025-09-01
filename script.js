@@ -4,10 +4,10 @@ const resetEl = document.getElementById("reset")
 const timerEl = document.getElementById("timer")
 
 let interval;
-let timeLeft = 60;
+let timeLeft = 1500;
 let workFlg = 1;
 
-const alarmSound = new Audio("alarm.mp3");
+const alarmSound = new Audio("assets/alarm.mp3");
 alarmSound.load();
 
 function updateTimer(){
@@ -68,3 +68,5 @@ startEl.addEventListener("click", () => {
 });
 endEl.addEventListener("click", stopTimer);
 resetEl.addEventListener("click", resetTimer);
+
+document.body.style.backgroundColor = "#f6e8e8";
