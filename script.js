@@ -5,8 +5,10 @@ const timerEl = document.getElementById("timer")
 
 let interval;
 let timeLeft = 60;
-
 let workFlg = 1;
+
+const alarmSound = new Audio("alarm.mp3");
+alarmSound.load();
 
 function updateTimer(){
     let minutes = Math.floor(timeLeft / 60);
@@ -28,17 +30,19 @@ function startTimer(){
 
         if(timeLeft <= 0){
             clearInterval(interval);
+
+            alarmSound.currentTime = 0;
+            alarmSound.play().catch(err => console.log("Play audio failed: ", err));
+
             if(workFlg === 1){
-                notifyUser("Work session over! Take a break :)");
                 workFlg = 0;
                 timeLeft = 300;
             }else{
-                notifyUser("Break over! Go back to work >:)");
                 workFlg = 1;
                 timeLeft = 1500;
             }
             updateTimer();
-            startTimer();
+            //startTimer();
         }else{
             updateTimer();
         }
@@ -55,22 +59,12 @@ function resetTimer(){
     updateTimer();
 }
 
-function notifyUser(message){
-    const audio = new Audio("alarm.mp3");
-    audio.preload = "auto";
-    audio.play().catch(error => console.log("Play sound failed: ", error));
-
-    if(Notification.permission === "granted"){
-        new Notification(message);
-    }else if(Notification.permission !== "denied"){
-        Notification.requestPermission().then(permission => {
-            if(permission === "granted"){
-                new Notification(message);
-            }
-        });
-    }
-}
-
-startEl.addEventListener("click", startTimer);
+startEl.addEventListener("click", () => {
+    alarmSound.play().then(() => {
+        alarmSound.pause();
+        alarmSound.currentTime = 0;
+    }).catch(() => {});
+    startTimer();
+});
 endEl.addEventListener("click", stopTimer);
 resetEl.addEventListener("click", resetTimer);
